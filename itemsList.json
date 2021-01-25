@@ -1,0 +1,12 @@
+[
+    {
+        "item": "Papel",
+        "quantity": 10,
+        "unitPrice": 5
+    },
+    {
+        "item": "Caneta",
+        "quantity": 5,
+        "unitPrice": 10
+    }
+]
