@@ -3,35 +3,37 @@
 ## Pré-requisitos
 
 É necessário ter instalado o [Node.js](https://nodejs.org/en/download/), para a execução.
+## Estrutura de dados
 
-## Executando
+O sistema trabalha com duas entidades, `Item` e `E-mail`. O `Item` possue a seguinte estrutura de dados:
 
-Para executar basta abrir a pasta raiz do projeto e usar o comando:
+| Atributo  | Tipo    | Descrição                                   |
+|-----------|---------|---------------------------------------------|
+| item      | String  | Nome do item                                |
+| quantity  | Inteiro | Quantidade de itens                         |
+| unitPrice | Inteiro | Preço unitário do item em centavos de reais |
 
-$ node index.js
+Já o `E-mail`, é uma `string`, respresentando um endereço eletrônico informado.
 
-### Entrada de dados
+## Execução
 
-A entrada de dados é feita por arquivos JSON externos. A lista de itens é fornecida no arquivo itemsList.json, e a de emails no arquivo emailsList.json.
+Para executar, basta abrir a pasta raiz do projeto e usar o comando:
 
-#### Formato da lista de itens
+```
+node index.js
+```
 
-O formato da lista de itens é uma array de objetos, com 3 atributos:
+A entrada de dados é feita por arquivos JSON externos. Onde um `array` de `Itens` é fornecida no arquivo `./itemsList.json`, e um `array` de `E-mails` no arquivo `./emailsList.json`. Os arquivos enviados, possuem exemplos de entrada com dados fictícios.
 
-- "item": string
-- "quantity": int
-- "unitPrice": int
+O resultado será printado no console no formato de um dicionário, onde as chaves são os e-mails e o valor, quanto cada um deve pagar da conta.
 
-onde, o atributo "item" é o nome do mesmo, o atributo "quantity" é a quantidade de itens deste tipo, e o atributo "unitPrice" é o preço unitário para uma unidade desse item, em centavos de reais.
+Exemplo de saída:
 
-O arquivo enviado, tem um exemplo de entrada com dados fictícios.
-
-#### Formato da lista de emails
-
-O formato da lista de emails é uma array de string, onde cada célula tem um email diferente.
-
-O arquivo enviado, tem um exemplo de entrada com dados fictícios.
-
-### Resultado/Saída de dados
-
-O resultado será printado no console no formato de um dicionário, onde as chaves são os emails e o valor quanto cada um deve pagar da conta.
+```
+node index.js
+{
+  'email1@provedor1.com': 42,  
+  'email2@provedor2.com': 41,
+  'email3@provedor3.com': 41   
+}
+```
