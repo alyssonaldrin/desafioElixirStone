@@ -1,37 +1,55 @@
-import {promises as fs} from "fs";
+import { promises as fs } from "fs";
 
-main();
-
-async function main() {
-    const ITEMS_LIST = await getItemsList();
-    const EMAILS = await getEmailsList();
-    result(ITEMS_LIST, EMAILS);
+/**
+ * lê o arquivo e retorna em formato JSON
+ * @param fileName 
+ */
+async function readJsonFile(fileName) {
+    return JSON.parse(await fs.readFile(fileName));
 }
 
-//leitura da list de itens 
+/**
+ * lê o json de items e retorna
+ */
 async function getItemsList() {
-    return JSON.parse(await fs.readFile("itemsList.json"));
-}
-//leitura da list de emails
-async function getEmailsList() {
-    return JSON.parse(await fs.readFile("emailsList.json"));
+    return await readJsonFile("itemsList.json");
 }
 
-//calcula e printa os resultados
+/**
+ * lê o json de emails e retorna
+ */
+async function getEmailsList() {
+    return await readJsonFile("emailsList.json");
+}
+
+/**
+ * verifica se a lista fornecida está vazia
+ * @param list 
+ */
+const isListEmpty = (list) => {
+    return (!list || list.length === 0);
+}
+
+/**
+ * calcula e printa os resultados
+ * @param itemsList lista de itens
+ * @param emailsList lista de emails
+ */
 function result(itemsList, emailsList) {
 
-    //testa se uma list existe ou se não está vazia
-    const isListEmpty = (list) => {
-        return (!list || list.length === 0);
-    }
-
-    //informa ao usuário quando uma das listas está vazia ou se ela não existe.
+    //informa ao usuário quando a lista de itens está vazia ou se ela não existe.
     if (isListEmpty(itemsList)) {
-        console.log("Lista de itens vazia ou inexistente, por favor executar novamente com a lista de itens desejada!");
+        console.log(`
+            Lista de itens vazia ou inexistente, por favor executar novamente com a lista de itens desejada!
+        `);
         return;
     }
+
+    //informa ao usuário quando a lista de emails está vazia ou se ela não existe.
     if (isListEmpty(emailsList)) {
-        console.log("Lista de e-mails vazia ou inexistente, por favor executar novamente com a lista de emails desejada");
+        console.log(`
+            Lista de e-mails vazia ou inexistente, por favor executar novamente com a lista de emails desejada
+        `);
         return;
     }
 
@@ -39,15 +57,17 @@ function result(itemsList, emailsList) {
     const total = itemsList.reduce((acc, cur) => {
         return (cur.quantity * cur.unitPrice) + acc;
     }, 0);
-    
+
     //divide de forma igual entre a quantidade de emails e arredonda para baixo
     const numberOfEmails = emailsList.length;
     const average = Math.floor(total / numberOfEmails);
-    
+
     //verifica se há resto na divisão
-    const remainder = (total % numberOfEmails) != 0 ? true : false;
-    
-    //cria o dicionário onde a chave é o e-mail com seu determinado valor a pagar, sendo o primeiro valor acrescido de 1,caso haja resto para não faltar nenhum centavo
+    const remainder = (total % numberOfEmails) != 0
+
+    /** 
+     * cria o dicionário onde a chave é o e-mail com seu determinado valor a pagar, sendo o primeiro valor acrescido de 1,* caso haja resto para não faltar nenhum centavo
+    */
     const averageByEmail = {};
     emailsList.forEach((email, index) => {
         if (!index && remainder) {
@@ -55,6 +75,15 @@ function result(itemsList, emailsList) {
             return;
         };
         averageByEmail[email] = average;
-        });
+    });
+
     console.log(averageByEmail);
 }
+
+async function main() {
+    const itemsList = await getItemsList();
+    const emailsList = await getEmailsList();
+    result(itemsList, emailsList);
+}
+
+main();
