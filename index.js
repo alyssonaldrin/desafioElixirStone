@@ -8,32 +8,32 @@ async function main() {
     result(ITEMS_LIST, EMAILS);
 }
 
-//leitura da array de itens 
+//leitura da list de itens 
 async function getItemsList() {
     return JSON.parse(await fs.readFile("itemsList.json"));
 }
-//leitura da array de emails
+//leitura da list de emails
 async function getEmailsList() {
     return JSON.parse(await fs.readFile("emailsList.json"));
 }
 
 //calcula e printa os resultados
-const result = (itemsList, emailsList) => {
-  
-    const isArrayEmpty = (array) => {
-        return (!array || array.length === 0);
+function result(itemsList, emailsList) {
+
+    //testa se uma list existe ou se não está vazia
+    const isListEmpty = (list) => {
+        return (!list || list.length === 0);
     }
 
-    if (isArrayEmpty(itemsList)) {
+    //informa ao usuário quando uma das listas está vazia ou se ela não existe.
+    if (isListEmpty(itemsList)) {
         console.log("Lista de itens vazia ou inexistente, por favor executar novamente com a lista de itens desejada!");
         return;
     }
-    if (isArrayEmpty(emailsList)) {
+    if (isListEmpty(emailsList)) {
         console.log("Lista de e-mails vazia ou inexistente, por favor executar novamente com a lista de emails desejada");
         return;
     }
-
-    const numberOfEmails = emailsList.length;
 
     //multiplica o preço de cada item por sua quantidade e soma todos os itens
     const total = itemsList.reduce((acc, cur) => {
@@ -41,6 +41,7 @@ const result = (itemsList, emailsList) => {
     }, 0);
     
     //divide de forma igual entre a quantidade de emails e arredonda para baixo
+    const numberOfEmails = emailsList.length;
     const average = Math.floor(total / numberOfEmails);
     
     //verifica se há resto na divisão

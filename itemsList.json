@@ -8,5 +8,10 @@
         "item": "Caneta",
         "quantity": 5,
         "unitPrice": 10
+    },
+    {
+        "item": "Mousepad",
+        "quantity": 5,
+        "unitPrice": 5
     }
 ]
